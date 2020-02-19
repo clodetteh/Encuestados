@@ -19,6 +19,10 @@ var VistaAdministrador = function(modelo, controlador, elementos) {
   this.modelo.borradoDeTodo.suscribir(function(){
     contexto.reconstruirLista();
   })
+
+  this.modelo.editadoPregunta.suscribir(function(){
+    contexto.reconstruirLista();
+  })
 };
 
 
@@ -26,6 +30,7 @@ VistaAdministrador.prototype = {
   //lista
   inicializar: function() {
     //llamar a los metodos para reconstruir la lista, configurar botones y validar formularios
+    this.modelo.cargarPreguntas();
     this.reconstruirLista();
     this.configuracionDeBotones();
     validacionDeFormulario();
@@ -69,19 +74,31 @@ VistaAdministrador.prototype = {
       var respuestas = [];
 
       $('[name="option[]"]').each(function() {
+        var respuesta = $(this).val()
+        if(respuesta.length > 0){
         respuestas.push({'textoRespuesta':$(this).val(), 'cantidad' : 0})
-      })
+        };
+      });
       contexto.limpiarFormulario();
       contexto.controlador.agregarPregunta(value, respuestas);
     });
 
     e.botonBorrarPregunta.click(function(){
       var id = parseInt($('.list-group-item.active').attr('id'));
-      contexto.controlador.borrarPregunta(id);
+      if(!isNaN(id)){
+        contexto.controlador.borrarPregunta(id);
+      }else{
+        alert("Debe seleccionar un elemento")
+      }
     });
     
     e.borrarTodo.click(function(){
       contexto.controlador.borrarTodo();
+    });
+
+    e.botonEditarPregunta.click(function(){
+      var id = parseInt($('.list-group-item.active').attr('id'));
+      contexto.controlador.editarPregunta(id);
     });
   },
 

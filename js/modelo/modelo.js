@@ -9,6 +9,8 @@ var Modelo = function() {
   this.preguntaAgregada = new Evento(this);
   this.preguntaEliminada = new Evento(this);
   this.borradoDeTodo = new Evento(this);
+  this.editadoPregunta = new Evento(this);
+  this.agregarVoto = new Evento(this);
 };
 
 Modelo.prototype = {
@@ -35,23 +37,41 @@ Modelo.prototype = {
 
   borrarPregunta: function(id){
     var index;
-    this.preguntas.some(function(element, i){
-      if(element.id == id){
-        index = i;
-      }
-    });
-
+    this.preguntas.some((element, i) => {element.id == id ? index = i : 0})
     this.preguntas.splice(index, 1);
+    this.guardar();
     this.preguntaEliminada.notificar();
   },
 
   borrarTodo: function(){
     this.preguntas = [];
+    this.guardar();
     this.borradoDeTodo.notificar();
 
   },
 
+  editarPregunta: function(id){
+    var modificacionPregunta = prompt("Editar pregunta:");
+    var index;
+    this.preguntas.some((element, i) => {element.id == id ? index = i : 0})
+    if(modificacionPregunta != ""){ this.preguntas[index].textoPregunta = modificacionPregunta};
+    this.guardar();
+    this.editadoPregunta.notificar();
+  },
+
+  agregarVoto: function(nombrePregunta, respuestaSeleccionada){
+    
+  },
+
   //se guardan las preguntas
   guardar: function(){
+    localStorage.setItem('preguntas', JSON.stringify(this.preguntas));
+  },
+
+  cargarPreguntas: function(){
+    var stringPreguntas = localStorage.getItem("preguntas");
+    if(stringPreguntas !== null) {
+      this.preguntas = JSON.parse(stringPreguntas);
+    }
   },
 };

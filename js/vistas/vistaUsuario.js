@@ -16,6 +16,7 @@ var VistaUsuario = function(modelo, controlador, elementos) {
 VistaUsuario.prototype = {
   //muestra la lista por pantalla y agrega el manejo del boton agregar
   inicializar: function() {
+    this.modelo.cargarPreguntas();
     this.reconstruirLista();
     var elementos = this.elementos;
     var contexto = this;
@@ -30,8 +31,7 @@ VistaUsuario.prototype = {
   //reconstruccion de los graficos de torta
   reconstruirGrafico: function(){
     var contexto = this;
-    //obtiene las preguntas del local storage
-    var preguntas = this.modelo.preguntas;
+    //var preguntas = this.modelo.preguntas;
     preguntas.forEach(function(clave){
       var listaParaGrafico = [[clave.textoPregunta, 'Cantidad']];
       var respuestas = clave.cantidadPorRespuesta;
@@ -47,9 +47,10 @@ VistaUsuario.prototype = {
     var listaPreguntas = this.elementos.listaPreguntas;
     listaPreguntas.html('');
     var contexto = this;
-    var preguntas = this.modelo.preguntas;
+    var preguntas = this.modelo.preguntas || [];
     preguntas.forEach(function(clave){
       //completar
+      listaPreguntas.append($('<div>', {'value' : clave.textoPregunta, 'text': clave.textoPregunta, 'id' : clave.id}));
       //agregar a listaPreguntas un elemento div con valor "clave.textoPregunta", texto "clave.textoPregunta", id "clave.id"
       var respuestas = clave.cantidadPorRespuesta;
       contexto.mostrarRespuestas(listaPreguntas,respuestas, clave);
