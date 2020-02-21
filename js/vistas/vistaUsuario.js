@@ -23,15 +23,14 @@ VistaUsuario.prototype = {
     
     elementos.botonAgregar.click(function() {
       contexto.agregarVotos(); 
-    });
-      
-    this.reconstruirGrafico();
+      contexto.reconstruirGrafico();
+    });   
   },
 
   //reconstruccion de los graficos de torta
   reconstruirGrafico: function(){
     var contexto = this;
-    //var preguntas = this.modelo.preguntas;
+    var preguntas = this.modelo.preguntas;
     preguntas.forEach(function(clave){
       var listaParaGrafico = [[clave.textoPregunta, 'Cantidad']];
       var respuestas = clave.cantidadPorRespuesta;

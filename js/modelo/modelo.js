@@ -10,7 +10,7 @@ var Modelo = function() {
   this.preguntaEliminada = new Evento(this);
   this.borradoDeTodo = new Evento(this);
   this.editadoPregunta = new Evento(this);
-  this.agregarVoto = new Evento(this);
+  this.agregadoDeVoto = new Evento(this);
 };
 
 Modelo.prototype = {
@@ -60,7 +60,20 @@ Modelo.prototype = {
   },
 
   agregarVoto: function(nombrePregunta, respuestaSeleccionada){
+    var pregunta;
+   this.preguntas.forEach((element) =>{
+     if(element.textoPregunta == nombrePregunta){
+        pregunta = element.cantidadPorRespuesta; 
+     }});
     
+    pregunta.forEach((element) =>{
+      if(element.textoRespuesta == respuestaSeleccionada){
+        element.cantidad++;
+      }})
+
+    console.log(this.preguntas);
+    this.agregadoDeVoto.notificar();
+    this.guardar();
   },
 
   //se guardan las preguntas
