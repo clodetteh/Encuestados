@@ -23,7 +23,6 @@ VistaUsuario.prototype = {
     
     elementos.botonAgregar.click(function() {
       contexto.agregarVotos(); 
-      contexto.reconstruirGrafico();
     });   
   },
 
@@ -73,13 +72,20 @@ VistaUsuario.prototype = {
 
   agregarVotos: function(){
     var contexto = this;
+    var respuestaSeleccionada;
+    var nombrePregunta;
     $('#preguntas').find('div').each(function(){
-        var nombrePregunta = $(this).attr('value');
+        nombrePregunta = $(this).attr('value');
         var id = $(this).attr('id');
-        var respuestaSeleccionada = $('input[name=' + id + ']:checked').val();
+        respuestaSeleccionada = $('input[name=' + id + ']:checked').val();
         $('input[name=' + id + ']').prop('checked',false);
-        contexto.controlador.agregarVoto(nombrePregunta,respuestaSeleccionada);
       });
+      if(respuestaSeleccionada){
+        contexto.controlador.agregarVoto(nombrePregunta,respuestaSeleccionada);
+        contexto.reconstruirGrafico();
+        }else{
+          alert("Debe completar todas las respuestas")
+        }
   },
 
   dibujarGrafico: function(nombre, respuestas){

@@ -70,8 +70,6 @@ Modelo.prototype = {
       if(element.textoRespuesta == respuestaSeleccionada){
         element.cantidad++;
       }})
-
-    console.log(this.preguntas);
     this.agregadoDeVoto.notificar();
     this.guardar();
   },
